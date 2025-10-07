@@ -8,6 +8,7 @@ import { useEffect } from "react";
 import type { BreadcrumbItem } from "./types";
 import { Sidebar } from "./components/Sidebar";
 import { FileList } from "./components/FileList";
+import { NewFolderDialog } from "./components/NewFolderDialog";
 
 const queryClient = new QueryClient({
   defaultOptions: {
@@ -27,8 +28,15 @@ function AppContent() {
   const [selectedItemId, setSelectedItemId] = useState<string | null>(null);
   const [selectedItemName, setSelectedItemName] = useState("");
 
-  const { allItems, items, isLoading, renameItem, deleteItem } =
-    useFileSystem(currentFolderId);
+  const {
+    allItems,
+    items,
+    isLoading,
+    renameItem,
+    deleteItem,
+    createFolder,
+    isCreatingFolder,
+  } = useFileSystem(currentFolderId);
 
   useEffect(() => {
     storageService.init();
@@ -116,6 +124,12 @@ function AppContent() {
           )}
         </main>
       </div>
+      <NewFolderDialog
+        open={showNewFolderDialog}
+        onOpenChange={setShowNewFolderDialog}
+        onCreateFolder={createFolder}
+        isCreating={isCreatingFolder}
+      />
     </div>
   );
 }
