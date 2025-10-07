@@ -9,6 +9,7 @@ import type { BreadcrumbItem } from "./types";
 import { Sidebar } from "./components/Sidebar";
 import { FileList } from "./components/FileList";
 import { NewFolderDialog } from "./components/NewFolderDialog";
+import { UploadDialog } from "./components/UploadDialog";
 
 const queryClient = new QueryClient({
   defaultOptions: {
@@ -36,6 +37,8 @@ function AppContent() {
     deleteItem,
     createFolder,
     isCreatingFolder,
+    uploadFile,
+    isUploadingFile,
   } = useFileSystem(currentFolderId);
 
   useEffect(() => {
@@ -92,6 +95,10 @@ function AppContent() {
     setShowPDFViewer(true);
   };
 
+  const handleUpload = (file: File) => {
+    uploadFile({ file, name: file.name });
+  };
+
   return (
     <div className="flex flex-col h-screen bg-background">
       <Header
@@ -129,6 +136,13 @@ function AppContent() {
         onOpenChange={setShowNewFolderDialog}
         onCreateFolder={createFolder}
         isCreating={isCreatingFolder}
+      />
+
+      <UploadDialog
+        open={showUploadDialog}
+        onOpenChange={setShowUploadDialog}
+        onUpload={handleUpload}
+        isUploading={isUploadingFile}
       />
     </div>
   );
