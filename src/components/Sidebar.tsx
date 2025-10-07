@@ -108,9 +108,11 @@ export function Sidebar({
           size="sm"
           className="w-full"
           onClick={() => {
-            storageService.clearAll();
-            queryClient.invalidateQueries({ queryKey: ["fileSystem"] });
-            onFolderClick(null);
+            if (confirm("Are you sure you want to clear all data?")) {
+              storageService.clearAll();
+              queryClient.invalidateQueries({ queryKey: ["fileSystem"] });
+              onFolderClick(null);
+            }
           }}
         >
           Clear All Data

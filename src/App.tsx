@@ -12,6 +12,7 @@ import { NewFolderDialog } from "./components/NewFolderDialog";
 import { UploadDialog } from "./components/UploadDialog";
 import { RenameDialog } from "./components/RenameDialog";
 import { PDFViewer } from "./components/PDFViewer";
+import { ConfirmDialog } from "./components/ConfirmDialog";
 
 const queryClient = new QueryClient({
   defaultOptions: {
@@ -28,8 +29,10 @@ function AppContent() {
   const [showUploadDialog, setShowUploadDialog] = useState(false);
   const [showRenameDialog, setShowRenameDialog] = useState(false);
   const [showPDFViewer, setShowPDFViewer] = useState(false);
+  const [showConfirmDialog, setShowConfirmDialog] = useState(false);
   const [selectedItemId, setSelectedItemId] = useState<string | null>(null);
   const [selectedItemName, setSelectedItemName] = useState("");
+  const [itemToDelete, setItemToDelete] = useState<string | null>(null);
 
   const {
     allItems,
@@ -88,8 +91,14 @@ function AppContent() {
   };
 
   const handleDelete = (id: string) => {
-    if (confirm("Are you sure you want to delete this item?")) {
-      deleteItem(id);
+    setItemToDelete(id);
+    setShowConfirmDialog(true);
+  };
+
+  const handleConfirmDelete = () => {
+    if (itemToDelete) {
+      deleteItem(itemToDelete);
+      setItemToDelete(null);
     }
   };
 
@@ -111,6 +120,7 @@ function AppContent() {
         onUpload={() => setShowUploadDialog(true)}
         searchQuery={searchQuery}
         onSearchChange={setSearchQuery}
+        currentFolderId={currentFolderId}
       />
       <div className="flex flex-1 overflow-hidden">
         <Sidebar
@@ -160,6 +170,17 @@ function AppContent() {
         open={showPDFViewer}
         onOpenChange={setShowPDFViewer}
         fileId={selectedItemId}
+      />
+
+      <ConfirmDialog
+        open={showConfirmDialog}
+        onOpenChange={setShowConfirmDialog}
+        title="Delete Item"
+        description="Are you sure you want to delete this item? This action cannot be undone."
+        confirmText="Delete"
+        cancelText="Cancel"
+        onConfirm={handleConfirmDelete}
+        variant="destructive"
       />
     </div>
   );

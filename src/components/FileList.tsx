@@ -27,8 +27,6 @@ export function FileList({
 }: FileListProps) {
   const [openMenuId, setOpenMenuId] = useState<string | null>(null);
 
-  console.log(items);
-
   const formatFileSize = (bytes?: number) => {
     if (!bytes) return "0 B";
     const k = 1024;

@@ -18,6 +18,7 @@ interface HeaderProps {
   onUpload: () => void;
   searchQuery: string;
   onSearchChange: (query: string) => void;
+  currentFolderId: string | null;
 }
 
 export function Header({
@@ -27,6 +28,7 @@ export function Header({
   onUpload,
   searchQuery,
   onSearchChange,
+  currentFolderId,
 }: HeaderProps) {
   return (
     <header className="border-b bg-white ">
@@ -73,7 +75,7 @@ export function Header({
             <FolderPlus className="h-4 w-4" />
             New Folder
           </Button>
-          <Button onClick={onUpload} size="sm">
+          <Button onClick={onUpload} size="sm" disabled={!currentFolderId}>
             <Upload className="h-4 w-4" />
             Upload
           </Button>
