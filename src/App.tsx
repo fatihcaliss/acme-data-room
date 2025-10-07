@@ -6,6 +6,8 @@ import { useFileSystem } from "./hooks/useFileSystem";
 import { useMemo, useState } from "react";
 import { useEffect } from "react";
 import type { BreadcrumbItem } from "./types";
+import { Sidebar } from "./components/Sidebar";
+import { FileList } from "./components/FileList";
 
 const queryClient = new QueryClient({
   defaultOptions: {
@@ -20,8 +22,13 @@ function AppContent() {
   const [searchQuery, setSearchQuery] = useState("");
   const [showNewFolderDialog, setShowNewFolderDialog] = useState(false);
   const [showUploadDialog, setShowUploadDialog] = useState(false);
+  const [showRenameDialog, setShowRenameDialog] = useState(false);
+  const [showPDFViewer, setShowPDFViewer] = useState(false);
+  const [selectedItemId, setSelectedItemId] = useState<string | null>(null);
+  const [selectedItemName, setSelectedItemName] = useState("");
 
-  const { allItems } = useFileSystem(currentFolderId);
+  const { allItems, items, isLoading, renameItem, deleteItem } =
+    useFileSystem(currentFolderId);
 
   useEffect(() => {
     storageService.init();
@@ -44,6 +51,39 @@ function AppContent() {
     return crumbs;
   }, [currentFolderId, allItems]);
 
+  const filteredItems = useMemo(() => {
+    if (!searchQuery) return items;
+    return items.filter((item) =>
+      item.name.toLowerCase().includes(searchQuery.toLowerCase())
+    );
+  }, [items, searchQuery]);
+
+  const handleRenameClick = (id: string) => {
+    const item = allItems.find((i) => i.id === id);
+    if (item) {
+      setSelectedItemId(id);
+      setSelectedItemName(item.name);
+      setShowRenameDialog(true);
+    }
+  };
+
+  const handleRename = (newName: string) => {
+    if (selectedItemId) {
+      renameItem({ id: selectedItemId, newName });
+    }
+  };
+
+  const handleDelete = (id: string) => {
+    if (confirm("Are you sure you want to delete this item?")) {
+      deleteItem(id);
+    }
+  };
+
+  const handleFileClick = (fileId: string) => {
+    setSelectedItemId(fileId);
+    setShowPDFViewer(true);
+  };
+
   return (
     <div className="flex flex-col h-screen bg-background">
       <Header
@@ -54,6 +94,28 @@ function AppContent() {
         searchQuery={searchQuery}
         onSearchChange={setSearchQuery}
       />
+      <div className="flex flex-1 overflow-hidden">
+        <Sidebar
+          items={allItems}
+          currentFolderId={currentFolderId}
+          onFolderClick={setCurrentFolderId}
+        />
+        <main className="flex-1 overflow-auto bg-white p-6">
+          {isLoading ? (
+            <div className="flex items-center justify-center h-64">
+              <p className="text-muted-foreground">Loading...</p>
+            </div>
+          ) : (
+            <FileList
+              items={filteredItems}
+              onFolderClick={setCurrentFolderId}
+              onFileClick={handleFileClick}
+              onRename={handleRenameClick}
+              onDelete={handleDelete}
+            />
+          )}
+        </main>
+      </div>
     </div>
   );
 }
