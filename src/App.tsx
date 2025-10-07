@@ -10,6 +10,7 @@ import { Sidebar } from "./components/Sidebar";
 import { FileList } from "./components/FileList";
 import { NewFolderDialog } from "./components/NewFolderDialog";
 import { UploadDialog } from "./components/UploadDialog";
+import { RenameDialog } from "./components/RenameDialog";
 
 const queryClient = new QueryClient({
   defaultOptions: {
@@ -39,6 +40,7 @@ function AppContent() {
     isCreatingFolder,
     uploadFile,
     isUploadingFile,
+    isRenaming,
   } = useFileSystem(currentFolderId);
 
   useEffect(() => {
@@ -143,6 +145,14 @@ function AppContent() {
         onOpenChange={setShowUploadDialog}
         onUpload={handleUpload}
         isUploading={isUploadingFile}
+      />
+
+      <RenameDialog
+        open={showRenameDialog}
+        onOpenChange={setShowRenameDialog}
+        itemName={selectedItemName}
+        onRename={handleRename}
+        isRenaming={isRenaming}
       />
     </div>
   );
