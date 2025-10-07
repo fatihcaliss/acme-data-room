@@ -11,6 +11,7 @@ import { FileList } from "./components/FileList";
 import { NewFolderDialog } from "./components/NewFolderDialog";
 import { UploadDialog } from "./components/UploadDialog";
 import { RenameDialog } from "./components/RenameDialog";
+import { PDFViewer } from "./components/PDFViewer";
 
 const queryClient = new QueryClient({
   defaultOptions: {
@@ -153,6 +154,12 @@ function AppContent() {
         itemName={selectedItemName}
         onRename={handleRename}
         isRenaming={isRenaming}
+      />
+
+      <PDFViewer
+        open={showPDFViewer}
+        onOpenChange={setShowPDFViewer}
+        fileId={selectedItemId}
       />
     </div>
   );
