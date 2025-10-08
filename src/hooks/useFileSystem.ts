@@ -1,6 +1,7 @@
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import { storageService } from "../services/storage";
 import type { FileSystemItem } from "../types";
+import { toast } from "sonner";
 
 export function useFileSystem(currentFolderId: string | null) {
   const queryClient = useQueryClient();
@@ -31,6 +32,10 @@ export function useFileSystem(currentFolderId: string | null) {
     },
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ["fileSystem"] });
+      toast.success("Folder created successfully");
+    },
+    onError: () => {
+      toast.error("Failed to create folder");
     },
   });
 
@@ -53,6 +58,10 @@ export function useFileSystem(currentFolderId: string | null) {
     },
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ["fileSystem"] });
+      toast.success("File uploaded successfully");
+    },
+    onError: () => {
+      toast.error("Failed to upload file");
     },
   });
 
@@ -72,6 +81,10 @@ export function useFileSystem(currentFolderId: string | null) {
     },
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ["fileSystem"] });
+      toast.success("Item renamed successfully");
+    },
+    onError: () => {
+      toast.error("Failed to rename item");
     },
   });
 
@@ -88,6 +101,10 @@ export function useFileSystem(currentFolderId: string | null) {
     },
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ["fileSystem"] });
+      toast.success("Item deleted successfully");
+    },
+    onError: () => {
+      toast.error("Failed to delete item");
     },
   });
 

@@ -13,6 +13,7 @@ import { UploadDialog } from "./components/UploadDialog";
 import { RenameDialog } from "./components/RenameDialog";
 import { PDFViewer } from "./components/PDFViewer";
 import { ConfirmDialog } from "./components/ConfirmDialog";
+import { Toaster } from "./components/ui/sonner";
 
 const queryClient = new QueryClient({
   defaultOptions: {
@@ -190,6 +191,7 @@ function App() {
   return (
     <QueryClientProvider client={queryClient}>
       <AppContent />
+      <Toaster />
     </QueryClientProvider>
   );
 }
