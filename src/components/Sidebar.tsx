@@ -83,7 +83,7 @@ export function Sidebar({
   };
 
   return (
-    <aside className="w-64 border-r bg-white p-4 overflow-y-auto flex flex-col">
+    <aside className="border-r bg-white p-4 overflow-y-auto flex flex-col md:w-64 w-32">
       <div className="mb-4">
         <h2 className="text-sm font-semibold text-muted-foreground mb-2">
           Folders
