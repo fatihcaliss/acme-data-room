@@ -52,6 +52,9 @@ function AppContent() {
     storageService.init();
   }, []);
 
+  console.log("items", items);
+  console.log("allItems", allItems);
+
   const breadcrumbs = useMemo(() => {
     const crumbs: BreadcrumbItem[] = [];
     let currentId = currentFolderId;
@@ -70,11 +73,15 @@ function AppContent() {
   }, [currentFolderId, allItems]);
 
   const filteredItems = useMemo(() => {
-    if (!searchQuery) return items;
-    return items.filter((item) =>
-      item.name.toLowerCase().includes(searchQuery.toLowerCase())
-    );
-  }, [items, searchQuery]);
+    if (!searchQuery) return currentFolderId ? items : allItems;
+    return currentFolderId
+      ? items.filter((item) =>
+          item.name.toLowerCase().includes(searchQuery.toLowerCase())
+        )
+      : allItems.filter((item) =>
+          item.name.toLowerCase().includes(searchQuery.toLowerCase())
+        );
+  }, [items, searchQuery, currentFolderId, allItems]);
 
   const handleRenameClick = (id: string) => {
     const item = allItems.find((i) => i.id === id);
