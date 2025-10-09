@@ -218,8 +218,4 @@ No environment variables required for the MVP version.
 
 ## 👨‍💻 Author
 
-Built with ❤️ for the Virtual Data Room MVP
-
----
-
 **Note**: This is an MVP (Minimum Viable Product) designed to demonstrate core functionality. For production use, consider adding authentication, cloud storage, and additional security features.
