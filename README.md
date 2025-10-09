@@ -50,8 +50,8 @@ A modern, secure file management system built with React, TypeScript,Tailwind CS
 1. **Clone the repository**
 
    ```bash
-   git clone <your-repo-url>
-   cd acme-mvp
+   git clone https://github.com/fatihcaliss/acme-data-room
+   cd acme-data-room
    ```
 
 2. **Install dependencies**
